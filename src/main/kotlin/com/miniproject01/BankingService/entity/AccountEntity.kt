@@ -4,7 +4,7 @@ import jakarta.persistence.*
 import java.math.BigDecimal
 
 @Entity
-@Table(name = "kyc")
+@Table(name = "accounts")
 data class AccountEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
