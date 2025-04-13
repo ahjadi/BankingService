@@ -108,6 +108,33 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+			<plugin>
+				<artifactId>kotlin-maven-plugin</artifactId>
+				<groupId>org.jetbrains.kotlin</groupId>
+				<version>${kotlin.version}</version>
+
+				<configuration>
+					<compilerPlugins>
+						<!-- Or "jpa" for JPA support -->
+						<plugin>no-arg</plugin>
+						<plugin>jpa</plugin>
+					</compilerPlugins>
+
+					<pluginOptions>
+						<option>no-arg:annotation=com.my.Annotation</option>
+						<!-- Call instance initializers in the synthetic constructor -->
+						<!-- <option>no-arg:invokeInitializers=true</option> -->
+					</pluginOptions>
+				</configuration>
+
+				<dependencies>
+					<dependency>
+						<groupId>org.jetbrains.kotlin</groupId>
+						<artifactId>kotlin-maven-noarg</artifactId>
+						<version>${kotlin.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
 		</plugins>
 	</build>
 

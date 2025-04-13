@@ -9,13 +9,14 @@ data class AccountEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
-
-    val date_of_birth: String,
-
-    var nationality: String,
-
-    var salary: BigDecimal,
-
-    @OneToMany(mappedBy = "id")
-    var transactions: MutableList<TransactionEntity>
+    var balance: BigDecimal,
+    var is_active: Boolean,
+    var account_number: String,
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    val user: UserEntity,
+    @OneToMany(mappedBy = "source_account")
+    var srcTransactions: MutableList<TransactionEntity>,
+    @OneToMany(mappedBy = "destination_account")
+    var dstTransactions: MutableList<TransactionEntity>
 )

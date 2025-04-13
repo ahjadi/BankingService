@@ -9,16 +9,12 @@ data class UserEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
+    @Column(name = "username")
     var username: String,
-
+    @Column(name = "password")
     var password: String,
 
-    // CHECK THIS
-    @OneToOne(mappedBy = "id")
-    var KYC: KYCEntity,
-
-    // CHECK THIS
-    @OneToMany(mappedBy = "id")
-    var accounts: MutableList<AccountEntity>
+    @OneToMany
+    var accounts: MutableList<AccountEntity?> = mutableListOf()
 
 )
