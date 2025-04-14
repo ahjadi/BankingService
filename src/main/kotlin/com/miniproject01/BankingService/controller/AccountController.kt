@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 class AccountController(
-    val accountService: AccountService,
-    val accountRepository: AccountRepository,
-    val userRepository: UserRepository,
-    val transactionService: TransactionService
+    private val accountService: AccountService,
+    private val accountRepository: AccountRepository,
+    private val userRepository: UserRepository,
+    private val transactionService: TransactionService
 ) {
 
     @PostMapping("/accounts/v1/accounts")

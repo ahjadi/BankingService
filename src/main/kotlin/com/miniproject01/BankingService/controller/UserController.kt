@@ -12,8 +12,8 @@ import java.util.*
 @RestController
 class UserController(
     private val userService: UserService,
-    val userRepository: UserRepository,
-    val kycRepository: KYCRepository
+    private val userRepository: UserRepository,
+    private val kycRepository: KYCRepository
 ) {
 
     @PostMapping("/users/v1/register")

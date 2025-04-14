@@ -17,9 +17,4 @@ data class AccountEntity(
     var accountName: String,
     @ManyToOne
     val user: UserEntity, // for FK
-
-//    @OneToMany(mappedBy = "source_account")
-//    var srcTransactions: MutableList<TransactionEntity>,
-//    @OneToMany(mappedBy = "destination_account")
-//    var dstTransactions: MutableList<TransactionEntity>
 )
