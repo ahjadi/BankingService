@@ -14,7 +14,7 @@ data class UserEntity(
     @Column(name = "password")
     var password: String,
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     var accounts: MutableList<AccountEntity?> = mutableListOf()
 
 )
