@@ -10,8 +10,8 @@ data class TransactionEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
-    var source_account: Long,
-    var destination_account: Long,
+    var sourceAccount: Long,
+    var destinationAccount: Long,
     var amount: BigDecimal
 )
 

@@ -12,15 +12,14 @@ data class KYCEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
-    var first_name: String,
-    var last_name: String,
+    var firstName: String,
+    var lastName: String,
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
-    val date_of_birth: Date,
+    val dateOfBirth: Date,
     var nationality: String,
     var salary: BigDecimal,
-
     @OneToOne
     var user: UserEntity?
 )

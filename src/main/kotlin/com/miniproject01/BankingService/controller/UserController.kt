@@ -5,14 +5,9 @@ import com.miniproject01.BankingService.entity.UserEntity
 import com.miniproject01.BankingService.repository.KYCRepository
 import com.miniproject01.BankingService.repository.UserRepository
 import com.miniproject01.BankingService.service.UserService
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.math.BigDecimal
-import java.text.SimpleDateFormat
-import java.util.Date
+import java.util.*
 
 @RestController
 class UserController(
@@ -26,30 +21,29 @@ class UserController(
 
     @PostMapping("/users/v1/kyc")
     fun createUpdateKYC(@RequestBody kycRequest: KYCRequest): KYCResponse {
-        val user = userRepository.findById(kycRequest.user_id).get()
+        val user = userRepository.findById(kycRequest.user_id).get() //  need to put Null Exception later
         val existingKYC = kycRepository.findByUser(user)
         val kyc = existingKYC?.copy(
-            first_name = kycRequest.first_name,
-            last_name = kycRequest.last_name,
-            date_of_birth = kycRequest.date_of_birth,
+            firstName = kycRequest.first_name,
+            lastName = kycRequest.last_name,
+            dateOfBirth = kycRequest.date_of_birth,
             nationality = kycRequest.nationality,
             salary = kycRequest.salary,
         ) ?: KYCEntity(
-            first_name = kycRequest.first_name,
-            last_name = kycRequest.last_name,
-            date_of_birth = kycRequest.date_of_birth,
+            firstName = kycRequest.first_name,
+            lastName = kycRequest.last_name,
+            dateOfBirth = kycRequest.date_of_birth,
             nationality = kycRequest.nationality,
             salary = kycRequest.salary,
             user = user
         )
-
         userService.createOrUpdateKYC(kyc)
         val userId: Long = user.id!!
         return KYCResponse(
             user_id = userId,
-            first_name = kyc.first_name,
-            last_name = kyc.last_name,
-            date_of_birth = kyc.date_of_birth,
+            first_name = kyc.firstName,
+            last_name = kyc.lastName,
+            date_of_birth = kyc.dateOfBirth,
             salary = kyc.salary
         )
     }
