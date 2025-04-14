@@ -1,1 +1,3 @@
-Put ERD here
+## 🗺️ Entity Relationship Diagram
+
+![ERD](docs/erd.png)
