@@ -1,3 +1,3 @@
-## 🗺️ Entity Relationship Diagram
+## Entity Relationship Diagram
 
-![ERD](docs/erd.png)
+![ERD](docs/erd-diagram.png)
