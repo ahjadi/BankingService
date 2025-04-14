@@ -7,8 +7,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface KYCRepository : JpaRepository<KYCEntity, Long>{
-
-    //Derived Queries
+    // Derived Queries
     fun findByUser(user: UserEntity) : KYCEntity
     fun findByUserId(userId: Long) : KYCEntity
 }
