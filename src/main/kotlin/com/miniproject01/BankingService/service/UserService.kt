@@ -12,7 +12,9 @@ class UserService(
     private val kycRepository: KYCRepository
 ) {
 
-    fun registerUser(user: UserEntity) = userRepository.save(user)
+    fun registerUser(user: UserEntity) {
+        userRepository.save(user)
+    }
 
     fun createOrUpdateKYC(kycEntity: KYCEntity) = kycRepository.save(kycEntity)
 
