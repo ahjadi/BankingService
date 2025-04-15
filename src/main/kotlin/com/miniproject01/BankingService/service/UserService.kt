@@ -13,12 +13,15 @@ class UserService(
 ) {
 
     fun registerUser(user: UserEntity) {
+        require(user.username.length > 10) {"username too long"}
+        require(user.password.length >= 8) {"password length should be greater than 7"}
         userRepository.save(user)
     }
 
-    fun createOrUpdateKYC(kycEntity: KYCEntity) = kycRepository.save(kycEntity)
+    fun createOrUpdateKYC(kycEntity: KYCEntity) {
+        kycRepository.save(kycEntity)
+    }
 
     fun getKYC(userId: Long) = kycRepository.findByUserId(userId)
-
 
 }

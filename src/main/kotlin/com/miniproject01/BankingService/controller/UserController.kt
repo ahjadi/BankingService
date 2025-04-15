@@ -7,6 +7,7 @@ import com.miniproject01.BankingService.entity.UserEntity
 import com.miniproject01.BankingService.repository.KYCRepository
 import com.miniproject01.BankingService.repository.UserRepository
 import com.miniproject01.BankingService.service.UserService
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.client.HttpClientErrorException.BadRequest
 import java.math.BigDecimal
@@ -20,10 +21,16 @@ class UserController(
 ) {
 
     @PostMapping("/users/v1/register")
-    fun register(@RequestBody user: UserEntity) = userService.registerUser(user)
+    fun register(@RequestBody user: UserEntity) : Any {
+        try {
+            return userService.registerUser(user)
+        } catch (error: IllegalArgumentException) {
+            return ResponseEntity.badRequest().body("error: ${error.message}")
+        }
+    }
 
     @PostMapping("/users/v1/kyc")
-    fun createUpdateKYC(@RequestBody kycRequest: KYCRequest): KYCResponse {
+    fun createUpdateKYC(@RequestBody kycRequest: KYCRequest): Any {
         val user = userRepository.findById(kycRequest.userId).get()
 
         val existingKYC = kycRepository.findByUser(user)
