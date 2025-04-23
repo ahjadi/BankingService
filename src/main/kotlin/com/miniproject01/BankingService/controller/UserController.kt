@@ -2,12 +2,14 @@ package com.miniproject01.BankingService.controller
 
 import com.miniproject01.BankingService.dto.KYCRequest
 import com.miniproject01.BankingService.dto.KYCResponse
+import com.miniproject01.BankingService.dto.UserRequest
 import com.miniproject01.BankingService.entity.KYCEntity
 import com.miniproject01.BankingService.entity.UserEntity
 import com.miniproject01.BankingService.repository.KYCRepository
 import com.miniproject01.BankingService.repository.UserRepository
 import com.miniproject01.BankingService.service.UserService
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.client.HttpClientErrorException.BadRequest
 import java.math.BigDecimal
@@ -20,8 +22,8 @@ class UserController(
     private val kycRepository: KYCRepository
 ) {
 
-    @PostMapping("/users/v1/register")
-    fun register(@RequestBody user: UserEntity) : Any {
+    @PostMapping("/public/users/v1/register")
+    fun register(@RequestBody user: UserRequest) : Any {
         try {
             return userService.registerUser(user)
         } catch (error: IllegalArgumentException) {
@@ -31,8 +33,10 @@ class UserController(
 
     @PostMapping("/users/v1/kyc")
     fun createUpdateKYC(@RequestBody kycRequest: KYCRequest): Any {
-        val user = userRepository.findById(kycRequest.userId).get()
-
+        val userName = SecurityContextHolder.getContext().authentication.name
+        val userId = userRepository.findByUsername(userName)?.id
+            ?: throw IllegalArgumentException("User Not Found")
+        val user = userRepository.findById(userId).get()
         val existingKYC = kycRepository.findByUser(user)
 
         val kyc = existingKYC?.copy(
@@ -54,7 +58,6 @@ class UserController(
         userService.createOrUpdateKYC(kyc)
 
         return KYCResponse(
-            userId = user.id!!,
             firstName = kyc.firstName,
             lastName = kyc.lastName,
             dateOfBirth = kyc.dateOfBirth,
@@ -62,16 +65,20 @@ class UserController(
         )
     }
 
-    @GetMapping("/users/v1/kyc/{user_id}")
-    fun getKYC(@PathVariable user_id: Long) :KYCEntity {
-        return userService.getKYC(user_id) ?: KYCEntity(
-            id = null,
-            firstName = "",
-            lastName = "",
-            dateOfBirth = Date(),
-            nationality = "",
-            salary = BigDecimal.ZERO,
-            user =  null
+    @GetMapping("/users/v1/kyc")
+    fun getKYC() : KYCResponse {
+
+        val userName = SecurityContextHolder.getContext().authentication.name
+        val userId = userRepository.findByUsername(userName)?.id
+            ?: throw IllegalArgumentException("User Not Found")
+
+        val kyc = userService.getKYC(userId)
+
+        return KYCResponse(
+            firstName = kyc!!.firstName ,
+            lastName = kyc.lastName,
+            dateOfBirth = kyc.dateOfBirth,
+            salary = kyc.salary
         )
     }
 }

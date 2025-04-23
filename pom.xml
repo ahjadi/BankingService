@@ -53,6 +53,29 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.11.5</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<scope>runtime</scope>
+			<version>0.11.5</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<scope>runtime</scope>
+			<version>0.11.5</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
@@ -88,8 +111,10 @@
 						<plugin>spring</plugin>
 						<plugin>jpa</plugin>
 						<plugin>all-open</plugin>
+						<plugin>no-arg</plugin>
 					</compilerPlugins>
 					<pluginOptions>
+						<option>no-arg:annotation=com.my.Annotation</option>
 						<option>all-open:annotation=jakarta.persistence.Entity</option>
 						<option>all-open:annotation=jakarta.persistence.MappedSuperclass</option>
 						<option>all-open:annotation=jakarta.persistence.Embeddable</option>
@@ -104,35 +129,9 @@
 					<dependency>
 						<groupId>org.jetbrains.kotlin</groupId>
 						<artifactId>kotlin-maven-noarg</artifactId>
-						<version>${kotlin.version}</version>
+						<version>1.9.25</version>
 					</dependency>
-				</dependencies>
-			</plugin>
-			<plugin>
-				<artifactId>kotlin-maven-plugin</artifactId>
-				<groupId>org.jetbrains.kotlin</groupId>
-				<version>${kotlin.version}</version>
 
-				<configuration>
-					<compilerPlugins>
-						<!-- Or "jpa" for JPA support -->
-						<plugin>no-arg</plugin>
-						<plugin>jpa</plugin>
-					</compilerPlugins>
-
-					<pluginOptions>
-						<option>no-arg:annotation=com.my.Annotation</option>
-						<!-- Call instance initializers in the synthetic constructor -->
-						<!-- <option>no-arg:invokeInitializers=true</option> -->
-					</pluginOptions>
-				</configuration>
-
-				<dependencies>
-					<dependency>
-						<groupId>org.jetbrains.kotlin</groupId>
-						<artifactId>kotlin-maven-noarg</artifactId>
-						<version>${kotlin.version}</version>
-					</dependency>
 				</dependencies>
 			</plugin>
 		</plugins>

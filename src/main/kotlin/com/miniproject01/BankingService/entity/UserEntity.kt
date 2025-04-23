@@ -12,6 +12,6 @@ data class UserEntity(
     @Column(name = "username")
     var username: String,
     @Column(name = "password")
-     var password: String,
+    var password: String,
 
     )

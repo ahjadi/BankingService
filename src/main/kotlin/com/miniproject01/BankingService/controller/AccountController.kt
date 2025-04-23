@@ -34,6 +34,7 @@ class AccountController(
             balance = account.balance
         )
     }
+
     @PostMapping("/accounts/v1/accounts/{account_number}/close")
     fun closeAccount(@PathVariable account_number: String) = accountService.deactivateAccount(account_number)
 
@@ -66,3 +67,4 @@ class AccountController(
         }
     }
 }
+
