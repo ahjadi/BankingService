@@ -5,6 +5,7 @@ import com.miniproject01.BankingService.dto.TransactionResponse
 import com.miniproject01.BankingService.entity.TransactionEntity
 import com.miniproject01.BankingService.repository.AccountRepository
 import com.miniproject01.BankingService.repository.TransactionRepository
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 
@@ -13,13 +14,13 @@ class TransactionService(
     val transactionRepository: TransactionRepository,
     val accountRepository: AccountRepository,
 ) {
-    fun transferMoney(transaction: TransactionRequest) : TransactionResponse{
+    fun transferMoney(transaction: TransactionRequest) :TransactionResponse{
 
         validateTransfer(transaction)
-        val source = accountRepository.getByAccountNumber(transaction.sourceAccount)
-        val destination = accountRepository.getByAccountNumber(transaction.destinationAccount)
-        source!!.balance -= transaction.transferAmount
-        destination!!.balance += transaction.transferAmount
+        val source = accountRepository.getByAccountNumber(transaction.sourceAccount)!!
+        val destination = accountRepository.getByAccountNumber(transaction.destinationAccount)!!
+        source.balance -= transaction.transferAmount
+        destination.balance += transaction.transferAmount
         accountRepository.save(source)
         accountRepository.save(destination)
 

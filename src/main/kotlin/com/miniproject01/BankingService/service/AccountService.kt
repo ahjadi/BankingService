@@ -16,8 +16,6 @@ class AccountService(
         account.isActive = false
         accountRepository.save(account)
     }
-
     fun listAllAccounts() = accountRepository.findAll()
-
 
 }
