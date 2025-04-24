@@ -44,16 +44,16 @@ class AccountController(
 
     @PostMapping("/accounts/v1/accounts/transfer")
     fun transfer(@RequestBody request: TransactionRequest): TransactionResponse {
-        try {
-            transactionService.validateTransfer(request)
+        return try{
+            transactionService.transferMoney(request)
         } catch (e: SameAccountTransferException) {
             println("Cannot transfer to the same account: ${e.message}")
         } catch (e: NullPointerException) {
             println("One of the accounts is null: ${e.message}")
         } catch (e: RuntimeException) {
             println("Validation failed: ${e.message}")
-        }
-              return transactionService.transferMoney(request)
+        } as TransactionResponse
+
 
             }
         }
