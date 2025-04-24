@@ -1,10 +1,10 @@
-package com.miniproject01.BankingService.authentication
+package com.miniproject01.BankingService.authentication.jwt
 
-
-import io.jsonwebtoken.*
+import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
 import org.springframework.stereotype.Component
-import java.util.*
+import java.util.Date
 import javax.crypto.SecretKey
 
 @Component

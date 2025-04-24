@@ -5,6 +5,7 @@ import com.miniproject01.BankingService.entity.KYCEntity
 import com.miniproject01.BankingService.entity.UserEntity
 import com.miniproject01.BankingService.repository.KYCRepository
 import com.miniproject01.BankingService.repository.UserRepository
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
@@ -16,8 +17,8 @@ class UserService(
 ) {
 
     fun registerUser(user: UserRequest) {
-        require(user.username.length <= 10) {"username too long"}
-        require(user.password.length >= 8) {"password length should be greater than 7"}
+        require(user.username.length <= 10) { "username too long" }
+        require(user.password.length >= 8) { "password length should be greater than 7" }
         val newUser = UserEntity(username = user.username, password = passwordEncoder.encode(user.password))
         userRepository.save(newUser)
     }
@@ -26,6 +27,18 @@ class UserService(
         kycRepository.save(kycEntity)
     }
 
-    fun getKYC(userId: Long) = kycRepository.findByUserId(userId)
+    fun getKYC(userId: Long): KYCEntity? {
+       return  kycRepository.findByUserId(userId)
+    }
+
+    fun getUserById(userId: Long) =
+        userRepository.findById(userId).orElseThrow { IllegalArgumentException("User not found with id $userId") }
+
+
+    fun extractUserIdFromJwtToken(): Long? {
+        return userRepository.findByUsername(SecurityContextHolder.getContext().authentication.name)?.id
+            ?: throw IllegalArgumentException("User Not Found")
+    }
+
 
 }

@@ -10,7 +10,9 @@ class AccountService(
 ) {
     fun createNewAccount(account: AccountEntity) = accountRepository.save(account)
     fun deactivateAccount(account_number: String) {
-        var account = accountRepository.getByAccountNumber(account_number)
+        var account =
+            accountRepository.getByAccountNumber(account_number)
+                ?: throw NullPointerException("No account exists for account number $account_number")
         account.isActive = false
         accountRepository.save(account)
     }

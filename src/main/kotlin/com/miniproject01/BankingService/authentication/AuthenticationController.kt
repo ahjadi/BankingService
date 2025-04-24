@@ -1,6 +1,7 @@
 package com.miniproject01.BankingService.authentication
 
 
+import com.miniproject01.BankingService.authentication.jwt.JwtService
 import org.springframework.security.authentication.*
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
