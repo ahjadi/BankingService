@@ -1,7 +1,9 @@
 package com.miniproject01.BankingService.steps
 
 import com.miniproject01.BankingService.authentication.jwt.JwtService
+import com.miniproject01.BankingService.entity.AccountEntity
 import com.miniproject01.BankingService.entity.UserEntity
+import com.miniproject01.BankingService.repository.AccountRepository
 import com.miniproject01.BankingService.repository.UserRepository
 import io.cucumber.java.Before
 import io.cucumber.java.en.Given
@@ -17,10 +19,13 @@ import org.springframework.http.HttpMethod
 import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.util.MultiValueMap
+import java.math.BigDecimal
+import java.util.UUID
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 
 class BakingServiceSteps {
+
 
     @Autowired
     private lateinit var jwtService: JwtService
@@ -32,12 +37,36 @@ class BakingServiceSteps {
     private lateinit var userRepository: UserRepository
 
     @Autowired
+    private lateinit var accountRepository: AccountRepository
+
+    @Autowired
     private lateinit var passwordEncoder: PasswordEncoder
+
+    private val testUUID1 : UUID = UUID.fromString("2b8bc165-a641-48d5-adc0-ce5e5512da7a")
+    private val testUUID2 : UUID = UUID.fromString("3f0dd228-9613-44b1-908c-e3f828b79fa3")
 
     @Before
     fun setupTestData() {
-        val user1 = UserEntity(username = "test1", password = passwordEncoder.encode("Test12345"))
+        val user1 = UserEntity(username = "ahjadi", password = passwordEncoder.encode("Test12345"))
         userRepository.save(user1)
+        val user2 = UserEntity(username = "yoyoyo", password = passwordEncoder.encode("Test12345"))
+        userRepository.save(user2)
+        val testAccountSource = AccountEntity(
+            balance = BigDecimal("3000"),
+            isActive = true,
+            accountName = "test1",
+            user = user1,
+            accountNumber = testUUID1.toString(),
+        )
+        val testAccountDestination = AccountEntity(
+            balance = BigDecimal("500"),
+            isActive = true,
+            accountName = "test2",
+            user = user2,
+            accountNumber = testUUID2.toString(),
+        )
+        accountRepository.save(testAccountSource)
+        accountRepository.save(testAccountDestination)
 
     }
 
@@ -96,6 +125,22 @@ class BakingServiceSteps {
             )
         )
         val requestEntity = HttpEntity<String>(payload, headers)
+        response = testRestTemplate.exchange(
+            endpoint,
+            HttpMethod.POST,
+            requestEntity,
+            String::class.java
+        )
+
+
+    }
+    @When("I make a POST request with no payload to {string}")
+    fun iMakeAPostRequestWithNoBody(endpoint: String) {
+        headersMap["Content-Type"] = listOf("application/json")
+        val headers = HttpHeaders(
+            MultiValueMap.fromMultiValue(headersMap)
+        )
+        val requestEntity = HttpEntity<String>(null, headers) // no payload
         response = testRestTemplate.exchange(
             endpoint,
             HttpMethod.POST,
